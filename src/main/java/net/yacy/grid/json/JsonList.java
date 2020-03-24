@@ -17,7 +17,7 @@
  *  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.yacy.grid.tools;
+package net.yacy.grid.json;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -33,22 +33,22 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 /**
- * A JSONList is an objet which represents a list of json objects: that is
+ * A JSONList is an object which represents a list of json objects: that is
  * a popular file format which is used as elasticsearch bulk index format.
  * A jsonlist file is a text file where every line is a json object.
  * To bring a JSONArray into jsonlist format you have to do
  * - make sure that every element in the JSONArray is JSONObject
  * - print out every json in the list without indentation
  */
-public class JSONList implements Iterable<Object> {
+public class JsonList implements Iterable<Object> {
 
 	private JSONArray array;
 	
-	public JSONList() {
+	public JsonList() {
 		this.array = new JSONArray();
 	}
 	
-	public JSONList(InputStream sourceStream) throws IOException {
+	public JsonList(InputStream sourceStream) throws IOException {
         this();
         BufferedReader br = new BufferedReader(new InputStreamReader(sourceStream, StandardCharsets.UTF_8));
         String line;
@@ -64,22 +64,22 @@ public class JSONList implements Iterable<Object> {
         }
 	}
 
-	public JSONList(JSONArray a) throws IOException {
+	public JsonList(JSONArray a) throws IOException {
 		for (int i = 0; i < a.length(); i++) {
 			if (!(a.get(i) instanceof JSONObject)) throw new IOException("all objects in JSONArray must be JSONObject");
 		};
 		this.array = a;
 	}
 	
-	public JSONList(byte[] b) throws IOException {
+	public JsonList(byte[] b) throws IOException {
 		this(new ByteArrayInputStream(b));
 	}
 	
-	public JSONList(String jsonlist) throws IOException {
+	public JsonList(String jsonlist) throws IOException {
 		this(jsonlist.getBytes(StandardCharsets.UTF_8));
 	}
 	
-	public JSONList add(JSONObject object) {
+	public JsonList add(JSONObject object) {
 		this.array.put(object);
 		return this;
 	}

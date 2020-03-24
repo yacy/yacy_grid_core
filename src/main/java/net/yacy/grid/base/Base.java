@@ -32,11 +32,6 @@ import net.yacy.grid.base.api.info.ThreaddumpService;
 import net.yacy.grid.http.APIServer;
 import net.yacy.grid.tools.GitTool;
 
-/**
- * The Master Connect Program
- * 
- * URL for RabbitMQ: http://searchlab.eu:15672/
- */
 public class Base {
 
     public final static String DATA_PATH = "data";
