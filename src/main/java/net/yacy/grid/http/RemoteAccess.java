@@ -38,7 +38,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
-import net.yacy.grid.mcp.Data;
+import net.yacy.grid.base.Log;
 
 /**
  * Storage of a peer list which can be used for peer-to-peer communication.
@@ -166,7 +166,7 @@ public class RemoteAccess {
                 map.put(name, baos.toByteArray());
             }
         } catch (IOException | ServletException | IllegalStateException e) {
-            Data.logger.debug("Parsing of POST multipart failed", e);
+            Log.logger.debug("Parsing of POST multipart failed", e);
             throw new IOException(e.getMessage());
         }
         return map;

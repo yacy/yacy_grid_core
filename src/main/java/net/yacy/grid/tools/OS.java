@@ -46,7 +46,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import net.yacy.grid.mcp.Data;
+import net.yacy.grid.base.Log;
 
 public final class OS {
 
@@ -150,7 +150,7 @@ public final class OS {
               try {
                   fos.close();
               } catch (final Exception e ) {
-                  Data.logger.warn("", e);
+                  Log.logger.warn("", e);
               }
           }
       }
@@ -171,7 +171,7 @@ public final class OS {
           try {
               Runtime.getRuntime().exec("chmod 755 " + scriptFile.getAbsolutePath().replaceAll(" ", "\\ ")).waitFor();
           } catch (final InterruptedException e) {
-              Data.logger.warn("DEPLOY of script file failed. file = " + scriptFile.getAbsolutePath(), e);
+              Log.logger.warn("DEPLOY of script file failed. file = " + scriptFile.getAbsolutePath(), e);
               throw new IOException(e.getMessage());
           }
       }

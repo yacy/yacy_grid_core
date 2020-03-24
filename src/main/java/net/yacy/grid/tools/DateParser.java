@@ -22,6 +22,7 @@ package net.yacy.grid.tools;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -29,10 +30,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
-
-import net.yacy.grid.mcp.Data;
+import net.yacy.grid.base.Log;
 
 public class DateParser {
 
@@ -53,8 +51,6 @@ public class DateParser {
     public final static DateFormat minuteDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
     public final static DateFormat secondDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
     public final static SimpleDateFormat FORMAT_RFC1123 = new SimpleDateFormat(PATTERN_RFC1123, Locale.US);
-
-    public final static DateTimeFormatter utcFormatter = ISODateTimeFormat.dateTime().withZoneUTC();
 
     public final static Calendar UTCCalendar = Calendar.getInstance();
     public final static TimeZone UTCtimeZone = TimeZone.getTimeZone("UTC");
@@ -181,7 +177,7 @@ public class DateParser {
         try {
             System.out.println("post date to date     : " + parse(postDate, getTimezoneOffset()).getTime().getTime());
         } catch (ParseException | NumberFormatException e) {
-            Data.logger.warn("", e);
+            Log.logger.warn("", e);
         }
     }
 }

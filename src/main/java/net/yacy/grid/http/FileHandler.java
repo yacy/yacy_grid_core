@@ -46,7 +46,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.util.resource.PathResource;
 import org.eclipse.jetty.util.resource.Resource;
 
-import net.yacy.grid.mcp.Data;
+import net.yacy.grid.base.Log;
 import net.yacy.grid.tools.ByteBuffer;
 
 
@@ -131,7 +131,7 @@ public class FileHandler extends ResourceHandler implements Handler {
             }
             return resource;
         } catch (IOException e) {
-            Data.logger.warn("", e);
+            Log.logger.warn("", e);
         }
         return null;
     }

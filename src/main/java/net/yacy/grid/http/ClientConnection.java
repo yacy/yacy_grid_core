@@ -70,7 +70,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import net.yacy.grid.mcp.Data;
+import net.yacy.grid.base.Log;
 
 public class ClientConnection {
 
@@ -169,7 +169,7 @@ public class ClientConnection {
                     .register("https", trustSelfSignedSocketFactory)
                     .build();
         } catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
-            Data.logger.warn("", e);
+            Log.logger.warn("", e);
         }
         
         PoolingHttpClientConnectionManager cm = (socketFactoryRegistry != null) ? 
@@ -282,17 +282,17 @@ public class ClientConnection {
                 try {
                     while ((count = connection.inputStream.read(buffer)) > 0) os.write(buffer, 0, count);
                 } catch (IOException e) {
-                    Data.logger.warn(e.getMessage());
+                    Log.logger.warn(e.getMessage());
                 } finally {
                     os.close();
                 }
             } catch (IOException e) {
-                Data.logger.warn(e.getMessage());
+                Log.logger.warn(e.getMessage());
             } finally {
                 connection.close();
             }
         } catch (IOException e) {
-            Data.logger.warn(e.getMessage());
+            Log.logger.warn(e.getMessage());
         }
     }
     
@@ -331,7 +331,7 @@ public class ClientConnection {
         try {
             while ((count = this.inputStream.read(buffer)) > 0) baos.write(buffer, 0, count);
         } catch (IOException e) {
-            Data.logger.warn(e.getMessage());
+            Log.logger.warn(e.getMessage());
         } finally {
             this.close();
         }

@@ -50,7 +50,7 @@ import com.google.common.net.InetAddresses;
 import com.google.common.util.concurrent.UncheckedTimeoutException;
 
 public class Domains {
-    
+
     public  static final String LOCALHOST = "localhost"; // replace with IPv6 0:0:0:0:0:0:0:1 ?
     private static       String LOCALHOST_NAME = LOCALHOST; // this will be replaced with the actual name of the local host
 

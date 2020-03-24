@@ -1,6 +1,6 @@
 /**
  *  AbstractAPIHandler
- *  Copyright 17.05.2016 by Michael Peter Christen, @0rb1t3r and Robert Mader, @treba123
+ *  Copyright 17.05.2016 by Michael Peter Christen, @0rb1t3r
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import net.yacy.grid.mcp.Data;
+import net.yacy.grid.base.Log;
 
 @SuppressWarnings("serial")
 public abstract class AbstractAPIHandler extends HttpServlet implements APIHandler {
@@ -147,6 +147,6 @@ public abstract class AbstractAPIHandler extends HttpServlet implements APIHandl
         if (q.length() > 0) path = path + "?" + q;
         if (message.length() > 512) message = message.substring(0, 512) + "...";
         String m = host + " - " + httpResponseCode + " - " + t + "ms - " + path + " - " + message;
-        Data.logger.info(m);
+        Log.logger.info(m);
     }
 }

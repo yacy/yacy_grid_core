@@ -24,7 +24,7 @@ import java.lang.management.OperatingSystemMXBean;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
 
-import net.yacy.grid.mcp.Data;
+import net.yacy.grid.base.Log;
 
 public class Memory {
 
@@ -107,7 +107,7 @@ public class Memory {
         if (deadlockIDs == null) return;
         ThreadInfo[] infos = ManagementFactory.getThreadMXBean().getThreadInfo(deadlockIDs, true, true);
         for (ThreadInfo ti : infos) {
-            Data.logger.warn("DEADLOCKREPORT: " + ti.toString());
+            Log.logger.warn("DEADLOCKREPORT: " + ti.toString());
         }
     }
     

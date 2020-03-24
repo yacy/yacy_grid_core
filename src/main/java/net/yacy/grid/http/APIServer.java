@@ -39,7 +39,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
-import net.yacy.grid.mcp.Data;
+import net.yacy.grid.base.Log;
 
 /**
  * main server class as static class: we made this static on purpose because then it is always
@@ -63,7 +63,7 @@ public class APIServer {
             services.add(service);
             serviceMap.put(handler.getAPIName(), handler);
         } catch (InstantiationException | IllegalAccessException e) {
-            Data.logger.warn("", e);
+            Log.logger.warn("", e);
         }
     }
     
@@ -79,7 +79,7 @@ public class APIServer {
                 return port + ap;
             } catch (IOException e) {
                 if (force || ap >= 16) {
-                    Data.logger.warn("", e);
+                    Log.logger.warn("", e);
                     throw e;
                 }
                 ap++;
@@ -111,7 +111,7 @@ public class APIServer {
                 try {
                     servletHandler.addServlet(service, ((APIHandler) (service.getConstructor().newInstance())).getAPIPath());
                 } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                    Data.logger.warn(service.getName() + " instantiation error", e);
+                    Log.logger.warn(service.getName() + " instantiation error", e);
                 }
     
             ErrorHandler errorHandler = new ErrorHandler();
@@ -144,7 +144,7 @@ public class APIServer {
             server.stop();
             server.destroy();
         } catch (Exception e) {
-            Data.logger.warn("", e);
+            Log.logger.warn("", e);
         }
     }
     
@@ -152,7 +152,7 @@ public class APIServer {
         try {
             server.getThreadPool().join();
         } catch (Exception e) {
-            Data.logger.warn("", e);
+            Log.logger.warn("", e);
         }
     }
     

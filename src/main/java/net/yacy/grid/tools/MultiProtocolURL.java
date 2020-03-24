@@ -20,11 +20,8 @@
 
 package net.yacy.grid.tools;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -43,12 +40,7 @@ import java.util.regex.Pattern;
 
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
-import jcifs.smb.SmbFileInputStream;
-import net.yacy.grid.http.ClientConnection;
-import net.yacy.grid.http.ClientIdentification;
-import net.yacy.grid.io.assets.Asset;
-import net.yacy.grid.io.assets.FTPStorageFactory;
-import net.yacy.grid.mcp.Data;
+import net.yacy.grid.base.Log;
 import net.yacy.grid.tools.Classification.ContentDomain;
 import net.yacy.grid.tools.Punycode.PunycodeException;
 
@@ -2369,38 +2361,6 @@ public class MultiProtocolURL implements Serializable, Comparable<MultiProtocolU
         return null;
     }
 
-    public InputStream getInputStream(final ClientIdentification.Agent agent, final String username, final String pass, boolean active) throws IOException {
-        if (isFile()) return new BufferedInputStream(new FileInputStream(getFSFile()));
-        if (isSMB()) return new BufferedInputStream(new SmbFileInputStream(getSmbFile()));
-        if (isFTP()) {
-            FTPStorageFactory client = new FTPStorageFactory(this.host, this.port < 0 ? 21 : this.port, username, pass, false, active);
-            Asset<byte[]> asset = client.getStorage().load(this.path);
-            return new ByteArrayInputStream(asset.getPayload());
-        }
-        if (isHTTP() || isHTTPS()) {
-            // TODO: add agent, user and pass
-            return new ByteArrayInputStream(ClientConnection.load(this.toString()));
-        }
-
-        return null;
-    }
-
-    public byte[] get(final ClientIdentification.Agent agent, final String username, final String pass, boolean active) throws IOException {
-        if (isFile()) return read(new FileInputStream(getFSFile()));
-        if (isSMB()) return read(new SmbFileInputStream(getSmbFile()));
-        if (isFTP()) {
-            FTPStorageFactory client = new FTPStorageFactory(this.host, this.port < 0 ? 21 : this.port, username, pass, false, active);
-            Asset<byte[]> asset = client.getStorage().load(this.path);
-            return asset.getPayload();
-        }
-        if (isHTTP() || isHTTPS()) {
-            // TODO: add agent, user and pass
-            return ClientConnection.load(this.toString());
-        }
-
-        return null;
-    }
-
     public static byte[] read(final InputStream source) throws IOException {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         final byte[] buffer = new byte[2048];
@@ -2508,7 +2468,7 @@ public class MultiProtocolURL implements Serializable, Comparable<MultiProtocolU
             environment = element[0];
             url = element[1];
             try {aURL = MultiProtocolURL.newURL(environment, url);} catch (final MalformedURLException e) {
-                Data.logger.warn("", e);
+                Log.logger.warn("", e);
                 aURL = null;
             }
             if (environment == null) {
