@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
 
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
-import net.yacy.grid.base.Log;
+import net.yacy.grid.http.Log;
 import net.yacy.grid.tools.Classification.ContentDomain;
 import net.yacy.grid.tools.Punycode.PunycodeException;
 

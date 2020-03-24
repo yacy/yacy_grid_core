@@ -38,8 +38,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
-import net.yacy.grid.base.Log;
-
 /**
  * Storage of a peer list which can be used for peer-to-peer communication.
  * This is a static class to provide access to all other objects easily.

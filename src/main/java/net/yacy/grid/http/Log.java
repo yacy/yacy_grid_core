@@ -17,7 +17,7 @@
  *  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.yacy.grid.base;
+package net.yacy.grid.http;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

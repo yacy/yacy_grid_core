@@ -23,8 +23,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import net.yacy.grid.base.Log;
 import net.yacy.grid.http.APIHandler;
+import net.yacy.grid.http.Log;
 import net.yacy.grid.http.ObjectAPIHandler;
 import net.yacy.grid.http.Query;
 import net.yacy.grid.http.ServiceResponse;

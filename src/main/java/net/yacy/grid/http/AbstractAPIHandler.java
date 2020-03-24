@@ -30,8 +30,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import net.yacy.grid.base.Log;
-
 @SuppressWarnings("serial")
 public abstract class AbstractAPIHandler extends HttpServlet implements APIHandler {
 

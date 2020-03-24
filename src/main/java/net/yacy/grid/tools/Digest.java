@@ -39,7 +39,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import net.yacy.grid.base.Log;
+import net.yacy.grid.http.Log;
 
 public class Digest {
 

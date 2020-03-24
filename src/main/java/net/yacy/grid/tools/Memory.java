@@ -24,7 +24,7 @@ import java.lang.management.OperatingSystemMXBean;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
 
-import net.yacy.grid.base.Log;
+import net.yacy.grid.http.Log;
 
 public class Memory {
 

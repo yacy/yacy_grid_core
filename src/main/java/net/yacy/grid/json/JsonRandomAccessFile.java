@@ -28,7 +28,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import org.json.JSONObject;
 
-import net.yacy.grid.base.Log;
+import net.yacy.grid.http.Log;
 import net.yacy.grid.tools.BufferedRandomAccessFile;
 
 public class JsonRandomAccessFile extends BufferedRandomAccessFile {

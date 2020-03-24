@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 
-import net.yacy.grid.base.Log;
+import net.yacy.grid.http.Log;
 
 /**
  * A timeout matcher is a workaround to non-terminating matcher methods.

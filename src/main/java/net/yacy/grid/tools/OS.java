@@ -46,7 +46,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import net.yacy.grid.base.Log;
+import net.yacy.grid.http.Log;
 
 public final class OS {
 

@@ -70,8 +70,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import net.yacy.grid.base.Log;
-
 public class ClientConnection {
 
     public  static final String CHARSET = "UTF-8";

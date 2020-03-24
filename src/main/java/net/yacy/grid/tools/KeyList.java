@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.zip.GZIPInputStream;
 
-import net.yacy.grid.base.Log;
+import net.yacy.grid.http.Log;
 
 /**
  * a key list is a file which contains a list of key words; each line one word

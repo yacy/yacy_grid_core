@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import net.yacy.grid.base.Service;
 import net.yacy.grid.http.APIHandler;
 import net.yacy.grid.http.APIServer;
 import net.yacy.grid.http.ObjectAPIHandler;
@@ -49,7 +48,7 @@ public class StatusService extends ObjectAPIHandler implements APIHandler {
         Runtime runtime = Runtime.getRuntime();
         JSONObject json = new JSONObject(true);
         JSONObject system = new JSONObject(true);
-        system.put("service", Service.getName());
+        system.put("service", APIServer.getName());
         system.put("assigned_memory", runtime.maxMemory());
         system.put("used_memory", runtime.totalMemory() - runtime.freeMemory());
         system.put("available_memory", runtime.maxMemory() - runtime.totalMemory() + runtime.freeMemory());

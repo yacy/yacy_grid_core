@@ -31,7 +31,7 @@ import java.util.Map;
 
 import org.json.JSONObject;
 
-import net.yacy.grid.base.Log;
+import net.yacy.grid.http.Log;
 import net.yacy.grid.tools.CacheMap;
 
 /**

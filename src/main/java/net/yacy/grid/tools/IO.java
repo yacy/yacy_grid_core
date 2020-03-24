@@ -10,7 +10,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.yacy.grid.base.Log;
+import net.yacy.grid.http.Log;
 
 public final class IO {
 

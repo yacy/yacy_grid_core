@@ -30,6 +30,7 @@ import net.yacy.grid.base.api.info.LogService;
 import net.yacy.grid.base.api.info.StatusService;
 import net.yacy.grid.base.api.info.ThreaddumpService;
 import net.yacy.grid.http.APIServer;
+import net.yacy.grid.http.Log;
 import net.yacy.grid.tools.GitTool;
 
 public class Base {
@@ -52,9 +53,9 @@ public class Base {
         // start server
         List<Class<? extends Servlet>> services = new ArrayList<>();
         services.addAll(Arrays.asList(BASE_SERVICES));
-        Service.initEnvironment("base", 8888, services, DATA_PATH, true);
+        APIServer.initEnvironment("base", 8888, services, DATA_PATH, true);
         try {
-            APIServer.open(Service.getPort(), null, true);
+            APIServer.open(null, false);
 
             // start server
             Log.logger.info("started Base!");
@@ -63,7 +64,7 @@ public class Base {
             Log.logger.info("curl http://127.0.0.1:8010/yacy/grid/base/info/log.txt");
             Log.logger.info("curl http://127.0.0.1:8010/yacy/grid/base/info/threaddump.txt");
             Log.logger.info(new GitTool().toString());
-            Service.runService(null);
+            APIServer.runService(null);
         } catch (IOException e) {
             Log.logger.info("cannot start Base");
             e.printStackTrace();
