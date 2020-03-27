@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>yacy_grid_base</name>
-	<comment>YaCy Grid Base</comment>
+	<name>yacy_grid_core</name>
+	<comment>YaCy Grid Core</comment>
 	<projects>
 	</projects>
 	<buildSpec>
