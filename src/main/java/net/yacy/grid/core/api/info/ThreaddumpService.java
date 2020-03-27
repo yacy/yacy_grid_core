@@ -17,7 +17,7 @@
  *  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.yacy.grid.base.api.info;
+package net.yacy.grid.core.api.info;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -43,7 +43,7 @@ import java.util.regex.Pattern;
 
 /**
  * The Threadump Service
- * call http://localhost:8100/yacy/grid/mcp/info/threaddump.txt
+ * call http://localhost:8010/yacy/grid/core/info/threaddump.txt
  */
 public class ThreaddumpService extends ObjectAPIHandler implements APIHandler {
 
@@ -60,7 +60,7 @@ public class ThreaddumpService extends ObjectAPIHandler implements APIHandler {
 
     @Override
     public String getAPIPath() {
-        return "/yacy/grid/base/info/" + NAME + ".txt";
+        return "/yacy/grid/core/info/" + NAME + ".txt";
     }
     
     @Override

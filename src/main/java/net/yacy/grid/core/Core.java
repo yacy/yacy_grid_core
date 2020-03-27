@@ -17,7 +17,7 @@
  *  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.yacy.grid.base;
+package net.yacy.grid.core;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,14 +26,14 @@ import java.util.List;
 
 import javax.servlet.Servlet;
 
-import net.yacy.grid.base.api.info.LogService;
-import net.yacy.grid.base.api.info.StatusService;
-import net.yacy.grid.base.api.info.ThreaddumpService;
+import net.yacy.grid.core.api.info.LogService;
+import net.yacy.grid.core.api.info.StatusService;
+import net.yacy.grid.core.api.info.ThreaddumpService;
 import net.yacy.grid.http.APIServer;
 import net.yacy.grid.http.Log;
 import net.yacy.grid.tools.GitTool;
 
-public class Base {
+public class Core {
 
     public final static String DATA_PATH = "data";
  
@@ -60,9 +60,9 @@ public class Base {
             // start server
             Log.logger.info("started Base!");
             Log.logger.info("read status of base peer:");
-            Log.logger.info("curl http://127.0.0.1:8010/yacy/grid/base/info/status.json");
-            Log.logger.info("curl http://127.0.0.1:8010/yacy/grid/base/info/log.txt");
-            Log.logger.info("curl http://127.0.0.1:8010/yacy/grid/base/info/threaddump.txt");
+            Log.logger.info("curl http://127.0.0.1:8010/yacy/grid/core/info/status.json");
+            Log.logger.info("curl http://127.0.0.1:8010/yacy/grid/core/info/log.txt");
+            Log.logger.info("curl http://127.0.0.1:8010/yacy/grid/core/info/threaddump.txt");
             Log.logger.info(new GitTool().toString());
             APIServer.runService(null);
         } catch (IOException e) {

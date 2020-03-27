@@ -17,7 +17,7 @@
  *  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.yacy.grid.base.api.info;
+package net.yacy.grid.core.api.info;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,7 +30,7 @@ import net.yacy.grid.http.Query;
 import net.yacy.grid.http.ServiceResponse;
 import net.yacy.grid.tools.OS;
 
-// test: http://localhost:8100/yacy/grid/mcp/info/status.json
+// test: http://localhost:8010/yacy/grid/core/info/status.json
 public class StatusService extends ObjectAPIHandler implements APIHandler {
 
     private static final long serialVersionUID = 8578478303032749479L;
@@ -38,7 +38,7 @@ public class StatusService extends ObjectAPIHandler implements APIHandler {
     
     @Override
     public String getAPIPath() {
-        return "/yacy/grid/base/info/" + NAME + ".json";
+        return "/yacy/grid/core/info/" + NAME + ".json";
     }
     
     @Override
