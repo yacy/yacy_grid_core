@@ -29,6 +29,8 @@ import javax.servlet.Servlet;
 import net.yacy.grid.core.api.info.LogService;
 import net.yacy.grid.core.api.info.StatusService;
 import net.yacy.grid.core.api.info.ThreaddumpService;
+import net.yacy.grid.core.api.vis.MapService;
+import net.yacy.grid.core.api.vis.MarkdownService;
 import net.yacy.grid.http.APIServer;
 import net.yacy.grid.http.Log;
 import net.yacy.grid.tools.GitTool;
@@ -44,6 +46,10 @@ public class Core {
             StatusService.class,
             ThreaddumpService.class,
             LogService.class,
+
+            // graphic services
+            MapService.class,
+            MarkdownService.class
     };
 
     public static void main(String[] args) {

@@ -26,6 +26,7 @@ import java.net.InetAddress;
 import java.net.URLDecoder;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -33,10 +34,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.imageio.ImageIO;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+
+import net.yacy.grid.graphics.RasterPlotter;
+
 
 /**
  * Storage of a peer list which can be used for peer-to-peer communication.
@@ -47,7 +54,7 @@ public class RemoteAccess {
 
     public static Map<String, Map<String, RemoteAccess>> history = new ConcurrentHashMap<String, Map<String, RemoteAccess>>();
     private final static MultipartConfigElement multipartConfigElement = new MultipartConfigElement("/tmp");
-    
+
     public static Query evaluate(final HttpServletRequest request) {
         try {request.setCharacterEncoding("UTF-8");} catch (UnsupportedEncodingException e){} // set character encoding before any request is made
         Map<String, String> qm = getQueryMap(request.getQueryString());
@@ -55,22 +62,22 @@ public class RemoteAccess {
         post.initGET(qm);
         return post;
     }
-    
+
     public static long latestVisit(String servlet, String remoteHost) {
         Map<String, RemoteAccess> hmap = history.get(servlet);
         if (hmap == null) {hmap = new ConcurrentHashMap<>(); history.put(servlet, hmap);}
         RemoteAccess ra = hmap.get(remoteHost);
         return ra == null ? -1 : ra.accessTime;
     }
-    
+
     public static String hostHash(String remoteHost) {
         return Integer.toHexString(Math.abs(remoteHost.hashCode()));
     }
-    
+
     private String remoteHost, localPath, peername;
     private int localHTTPPort, localHTTPSPort;
     private long accessTime;
-    
+
     private RemoteAccess(final String remoteHost, final String localPath, final Integer localHTTPPort, final Integer localHTTPSPort, final String peername) {
         this.remoteHost = remoteHost;
         this.localPath = localPath;
@@ -79,11 +86,11 @@ public class RemoteAccess {
         this.peername = peername;
         this.accessTime = System.currentTimeMillis();
     }
-    
+
     public String getRemoteHost() {
         return this.remoteHost;
     }
-    
+
     public String getLocalPath() {
         return this.localPath;
     }
@@ -99,11 +106,11 @@ public class RemoteAccess {
     public int getLocalHTTPSPort() {
         return this.localHTTPSPort;
     }
-    
+
     public String getPeername() {
         return this.peername;
     }
-    
+
     private static Set<String> localhostNames = new HashSet<>();
     static {
         localhostNames.add("0:0:0:0:0:0:0:1");
@@ -117,11 +124,11 @@ public class RemoteAccess {
         try {for (InetAddress a: InetAddress.getAllByName("localhost")) {localhostNames.add(a.getHostAddress()); localhostNames.add(a.getHostName()); localhostNames.add(a.getCanonicalHostName());}} catch (UnknownHostException e) {}
         //System.out.println(localhostNames);
     }
-    
+
     public static void addLocalhost(String h) {
         localhostNames.add(h);
     }
-    
+
     public static boolean isLocalhost(String host) {
         return localhostNames.contains(host);
     }
@@ -138,10 +145,10 @@ public class RemoteAccess {
                 value = URLDecoder.decode(value, "UTF-8");
                 map.put(key, value);
             } catch (UnsupportedEncodingException e) {}
-        }  
-        return map;  
+        }
+        return map;
     }
-    
+
     public static Map<String, byte[]> getPostMap(HttpServletRequest request) throws IOException {
         Map<String, byte[]> map = new HashMap<>();
         Map<String, String[]> pm = request.getParameterMap();
@@ -168,5 +175,64 @@ public class RemoteAccess {
             throw new IOException(e.getMessage());
         }
         return map;
+    }
+
+    public static enum FileType {
+        UNKNOWN, PNG, JPG, GIF, JSON, RSS;
+    }
+
+    public static class FileTypeEncoding {
+        public final FileType fileType;
+        public final boolean base64;
+        private FileTypeEncoding(final FileType fileType, final boolean base64) {
+            this.fileType = fileType;
+            this.base64 = base64;
+        }
+        private FileTypeEncoding(final FileType fileType) {
+            this.fileType = fileType;
+            this.base64 = false;
+        }
+    }
+
+    public static FileTypeEncoding getFileType(HttpServletRequest request) {
+        String servletPath = request.getServletPath();
+        if (servletPath.endsWith(".gif")) return new FileTypeEncoding(FileType.GIF);
+        if (servletPath.endsWith(".gif.base64")) return new FileTypeEncoding(FileType.GIF, true);
+        if (servletPath.endsWith(".png")) return new FileTypeEncoding(FileType.PNG);
+        if (servletPath.endsWith(".png.base64")) return new FileTypeEncoding(FileType.PNG, true);
+        if (servletPath.endsWith(".jpg")) return new FileTypeEncoding(FileType.JPG);
+        if (servletPath.endsWith(".jpg.base64")) return new FileTypeEncoding(FileType.JPG, true);
+        return new FileTypeEncoding(FileType.UNKNOWN);
+    }
+
+    public static void writeImage(final FileTypeEncoding fileType, final HttpServletResponse response, Query post, final RasterPlotter matrix) throws IOException {
+        // write image
+        ServletOutputStream sos = response.getOutputStream();
+        if (fileType.fileType == FileType.PNG) {
+            post.setResponse(response, fileType.base64 ? "application/octet-stream" : "image/png");
+            sos.write(fileType.base64 ? Base64.getEncoder().encode(matrix.pngEncode(1)) : matrix.pngEncode(1));
+        }
+        if (fileType.fileType == FileType.GIF) {
+            post.setResponse(response, fileType.base64 ? "application/octet-stream" : "image/gif");
+            if (fileType.base64) {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(matrix.getImage(), "gif", baos);
+                baos.close();
+                sos.write(Base64.getEncoder().encode(baos.toByteArray()));
+            } else {
+                ImageIO.write(matrix.getImage(), "gif", sos);
+            }
+        }
+        if (fileType.fileType == FileType.JPG) {
+            post.setResponse(response, fileType.base64 ? "application/octet-stream" : "image/jpeg");
+            if (fileType.base64) {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(matrix.getImage(), "jpg", baos);
+                baos.close();
+                sos.write(Base64.getEncoder().encode(baos.toByteArray()));
+            } else {
+                ImageIO.write(matrix.getImage(), "jpg", sos);
+            }
+        }
     }
 }

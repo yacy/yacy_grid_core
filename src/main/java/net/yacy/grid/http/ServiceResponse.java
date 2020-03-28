@@ -25,6 +25,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import net.yacy.grid.graphics.RasterPlotter;
+
 /**
  * wrapper class for the result type of services: either
  * JSONObject, JSONArray,  String, or byte[]
@@ -33,25 +35,36 @@ public class ServiceResponse {
 
     private Object object;
     private boolean setCORS;
-    
+    private boolean isImage;
+
     public ServiceResponse(JSONObject json) {
         this.object = json;
         this.setCORS = false;
+        this.isImage = false;
     }
     
     public ServiceResponse(JSONArray json) {
         this.object = json;
         this.setCORS = false;
+        this.isImage = false;
     }
     
     public ServiceResponse(String string) {
         this.object = string;
         this.setCORS = false;
+        this.isImage = false;
     }
     
     public ServiceResponse(byte[] bytes) {
         this.object = bytes;
         this.setCORS = false;
+        this.isImage = false;
+    }
+    
+    public ServiceResponse(RasterPlotter raster) {
+        this.object = raster;
+        this.setCORS = true;
+        this.isImage = true;
     }
 
     public ServiceResponse setCORS() {
@@ -78,6 +91,10 @@ public class ServiceResponse {
         return this.object instanceof byte[];
     }
     
+    public boolean isImage() {
+        return this.isImage;
+    }
+    
     public JSONObject getObject() throws JSONException {
         if (!isObject()) throw new JSONException("object type is not JSONObject: " + this.object.getClass().getName());
         return (JSONObject) this.object;
@@ -96,6 +113,10 @@ public class ServiceResponse {
     public byte[] getByteArray() throws JSONException {
         if (!isByteArray()) throw new JSONException("object type is not ByteArray: " + this.object.getClass().getName());
         return (byte[]) this.object;
+    }
+    
+    public RasterPlotter getImage() {
+        return (RasterPlotter) this.object;
     }
     
     public String getMimeType() {

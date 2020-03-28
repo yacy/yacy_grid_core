@@ -30,6 +30,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
+import net.yacy.grid.http.RemoteAccess.FileTypeEncoding;
+
 @SuppressWarnings("serial")
 public abstract class AbstractAPIHandler extends HttpServlet implements APIHandler {
 
@@ -123,6 +125,11 @@ public abstract class AbstractAPIHandler extends HttpServlet implements APIHandl
                 response.getOutputStream().write(serviceResponse.getByteArray());
                 response.setHeader("Access-Control-Allow-Origin", "*");
                 logClient(startTime, query, 200, "ok (ByteArray)");
+            } else if (serviceResponse.isImage()) {
+                FileTypeEncoding fileType = RemoteAccess.getFileType(request);
+                RemoteAccess.writeImage(fileType, response, query, serviceResponse.getImage());
+                response.setHeader("Access-Control-Allow-Origin", "*");
+                logClient(startTime, query, 200, "ok (Image)");
             }
         } catch (APIException e) {
             String message = e.getMessage();
